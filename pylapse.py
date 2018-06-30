@@ -12,8 +12,8 @@ else:
 
 def init_cam(device_id,width,height):
     cam = cv2.VideoCapture(device_id)
-    cam.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, width)
-    cam.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, height)
+    cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     return cam
 
 #######
@@ -59,7 +59,7 @@ def start_timelapse(fps,video_time,event_duration,cam_idx,height,width,output_di
     
             #debug print to see some progress
             if time.time() - tic > 5:
-                print 'created %d images out of %d' %(idx,max_frame_id)
+                print('created %d images out of %d' %(idx,max_frame_id))
                 tic = time.time()
     
                 #sleep between 2 frames
@@ -69,13 +69,13 @@ def start_timelapse(fps,video_time,event_duration,cam_idx,height,width,output_di
             if platform.system() == 'Windows':
                 if msvcrt.kbhit():
                     key_pressed = msvcrt.getch().strip()
-                    print key_pressed
+                    print(key_pressed)
             else:
                 i, o, e = select.select( [sys.stdin], [], [], 0.1 )
 
                 if (i):
                   key_pressed =  sys.stdin.readline().strip()
-                  print key_pressed
+                  print(key_pressed)
             #If pressed q then stop filming and start making the video
             if key_pressed == 'q':
                 break
@@ -86,7 +86,7 @@ def start_timelapse(fps,video_time,event_duration,cam_idx,height,width,output_di
 
 def preview_cam(cam_idx,height,width):
     cam = init_cam(cam_idx,width,height)
-    print cam_idx,width,height
+    print(cam_idx,width,height)
     while(True):
         # Capture frame-by-frame
         ret, frame = cam.read()
@@ -119,25 +119,25 @@ def main():
                       default=False,
                       help="start taking pictures for the timelapse")
     parser.add_option("-w", "--width",
-                      default=640,
+                      default=1280,
                       help="camera image width in pixels")
     parser.add_option("-l", "--height",
-                      default=480,
+                      default=720,
                       help="camera image height in pixels")
     parser.add_option("-c", "--cam_idx",
-                      default=0,
+                      default=1,
                       help="camera index")
     parser.add_option("-f", "--fps",
-                      default=30,
+                      default=15,
                       help="video output fps")
     parser.add_option("-v", "--video-duration",
-                      default=10,
+                      default=30,
                       help="output video duration")
     parser.add_option("-e", "--event-duration",
-                      default=120,
+                      default=5,
                       help="event duration (how much time the event is going to take)")
     parser.add_option("-o", "--output-dir",
-                      default='./',
+                      default='./output',
                       help="the folder it would create the images and the video")
     parser.add_option("-q", "--quality",
                       default=90,
@@ -147,7 +147,7 @@ def main():
     
     output_dir = options.output_dir    
     if os.path.isdir(output_dir) == False:
-        print "%s doesn't exist please choose another folder" % output_dir
+        print("%s doesn't exist please choose another folder" % output_dir)
         exit(0)
 
     cam_idx = int(options.cam_idx)
